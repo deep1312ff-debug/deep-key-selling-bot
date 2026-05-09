@@ -25,9 +25,11 @@ def load_products():
 
 
 def load_users():
-    with open("users.json", "r") as f:
-        return json.load(f)
-
+    try:
+        with open("users.json", "r") as f:
+            return json.load(f)
+    except:
+        return []
 
 def save_users(data):
     with open("users.json", "w") as f:
@@ -35,8 +37,11 @@ def save_users(data):
 
 
 def load_orders():
-    with open("orders.json", "r") as f:
-        return json.load(f)
+    try:
+        with open("orders.json", "r") as f:
+            return json.load(f)
+    except:
+        return []
 
 
 def save_orders(data):
