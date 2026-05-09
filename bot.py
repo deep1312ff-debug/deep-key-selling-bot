@@ -15,11 +15,11 @@ api_id=API_ID,
 api_hash=API_HASH
 )
 
--------------------
+#-------------------
 
-FILE FUNCTIONS
+#FILE FUNCTIONS
 
--------------------
+#-------------------
 
 def load_products():
 with open("products.json", "r") as f:
@@ -41,11 +41,11 @@ def save_orders(data):
 with open("orders.json", "w") as f:
 json.dump(data, f, indent=4)
 
--------------------
+#-------------------
 
-SAVE USER
+#SAVE USER
 
--------------------
+#-------------------
 
 def add_user(user_id):
 
@@ -55,11 +55,11 @@ if user_id not in users:
     users.append(user_id)  
     save_users(users)
 
--------------------
+#-------------------
 
-GET KEY
+#GET KEY
 
--------------------
+#-------------------
 
 def get_key(product):
 
@@ -81,11 +81,11 @@ with open(file_path, "w") as f:
 
 return first_key
 
--------------------
+#-------------------
 
-START
+#START
 
--------------------
+#-------------------
 
 @app.on_message(filters.command("start"))
 async def start(client, message):
@@ -109,11 +109,11 @@ await message.reply_text(
 reply_markup=InlineKeyboardMarkup(buttons)
 )
 
--------------------
+#-------------------
 
-PRODUCTS
+#PRODUCTS
 
--------------------
+#-------------------
 
 @app.on_callback_query(filters.regex("products"))
 async def products_menu(client, callback_query):
@@ -139,11 +139,11 @@ await callback_query.message.edit_text(
     reply_markup=InlineKeyboardMarkup(buttons)  
 )
 
--------------------
+#-------------------
 
-BUY MENU
+#BUY MENU
 
--------------------
+#-------------------
 
 @app.on_callback_query(filters.regex("^buy|"))
 async def buy_menu(client, callback_query):
@@ -176,11 +176,11 @@ await callback_query.message.edit_text(
     reply_markup=InlineKeyboardMarkup(buttons)  
 )
 
--------------------
+#-------------------
 
-PAYMENT
+#PAYMENT
 
--------------------
+#-------------------
 
 @app.on_callback_query(filters.regex("^pay|"))
 async def payment(client, callback_query):
@@ -213,11 +213,11 @@ After payment click below button.
 reply_markup=InlineKeyboardMarkup(buttons)
 )
 
--------------------
+#-------------------
 
-AUTO DELIVERY
+#AUTO DELIVERY
 
--------------------
+#-------------------
 
 @app.on_callback_query(filters.regex("^done|"))
 async def auto_delivery(client, callback_query):
@@ -264,11 +264,11 @@ await callback_query.message.reply_text(
 """
 )
 
--------------------
+#-------------------
 
-PROFILE
+#PROFILE
 
--------------------
+#-------------------
 
 @app.on_callback_query(filters.regex("profile"))
 async def profile(client, callback_query):
@@ -283,11 +283,11 @@ await callback_query.message.reply_text(
 """
 )
 
--------------------
+#-------------------
 
-MY ORDERS
+#MY ORDERS
 
--------------------
+#-------------------
 
 @app.on_callback_query(filters.regex("orders"))
 async def orders(client, callback_query):
@@ -318,11 +318,11 @@ for order in user_orders:
 
 await callback_query.message.reply_text(text)
 
--------------------
+#-------------------
 
-BROADCAST
+#BROADCAST
 
--------------------
+#-------------------
 
 @app.on_message(filters.command("broadcast") & filters.user(ADMIN_ID))
 async def broadcast(client, message):
@@ -353,11 +353,11 @@ await message.reply_text(
     f"✅ Broadcast Sent To {success} Users"  
 )
 
--------------------
+#-------------------
 
-USER COUNT
+#USER COUNT
 
--------------------
+#-------------------
 
 @app.on_message(filters.command("users") & filters.user(ADMIN_ID))
 async def users_count(client, message):
@@ -368,11 +368,11 @@ await message.reply_text(
     f"👥 Total Users: {len(users)}"  
 )
 
--------------------
+#-------------------
 
-BACK BUTTON
+#BACK BUTTON
 
--------------------
+#-------------------
 
 @app.on_callback_query(filters.regex("back"))
 async def back(client, callback_query):
@@ -388,10 +388,10 @@ await callback_query.message.edit_text(
     reply_markup=InlineKeyboardMarkup(buttons)  
 )
 
--------------------
+#-------------------
 
-RUN
+#RUN
 
--------------------
+#-------------------
 
 app.run()
