@@ -20,9 +20,11 @@ app = Client(
 # -------------------
 
 def load_products():
-    with open("products.json", "r") as f:
-        return json.load(f)
-
+    try:
+        with open("products.json", "r") as f:
+            return json.load(f)
+    except:
+        return {}
 
 def load_users():
     try:
@@ -122,7 +124,7 @@ async def products_menu(client, callback_query):
 
     buttons = []
 
-    for product in products:
+    for product in products.keys():
         buttons.append([
             InlineKeyboardButton(
                 product,
@@ -154,8 +156,9 @@ async def buy_menu(client, callback_query):
 
     buttons = []
 
-    for duration, price in products[product].items():
-
+    if product not in products:
+    await callback_query.message.reply_text("❌ Invalid product")
+    return
         text += f"{duration} = ₹{price}\n"
 
         buttons.append([
