@@ -1,3 +1,4 @@
+os.makedirs("keys", exist_ok=True)
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import json
