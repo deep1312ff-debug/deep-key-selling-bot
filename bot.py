@@ -3,9 +3,9 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import json
 import os
 
-BOT_TOKEN = "PASTE_BOT_TOKEN"
-API_ID = 123456
-API_HASH = "PASTE_API_HASH"
+BOT_TOKEN = "8642824822:AAFJkL2JBDhArA2U8mzk-dY-nsSN9-23VWQ"
+API_ID = 39572733
+API_HASH = "1569f0ee27b3670dc249794afab35489"
 ADMIN_ID = 8622515071
 
 app = Client(
