@@ -9,10 +9,10 @@ API_HASH = "1569f0ee27b3670dc249794afab35489"
 ADMIN_ID = 8622515071
 
 app = Client(
-"deepbot",
-bot_token=BOT_TOKEN,
-api_id=API_ID,
-api_hash=API_HASH
+    "deepbot",
+    bot_token=BOT_TOKEN,
+    api_id=API_ID,
+    api_hash=API_HASH
 )
 
 #-------------------
