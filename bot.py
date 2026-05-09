@@ -14,130 +14,143 @@ app = Client(
     api_id=API_ID,
     api_hash=API_HASH
 )
-# -------------------
-# INIT FILES
-# -------------------
-
-def ensure_files():
-    os.makedirs("keys", exist_ok=True)
-
-    if not os.path.exists("users.json"):
-        with open("users.json", "w") as f:
-            json.dump([], f)
-
-    if not os.path.exists("orders.json"):
-        with open("orders.json", "w") as f:
-            json.dump([], f)
-
-    if not os.path.exists("products.json"):
-        with open("products.json", "w") as f:
-            json.dump({}, f)
-
-ensure_files()
 
 # -------------------
-# LOAD / SAVE
+# FILE FUNCTIONS
 # -------------------
 
-def load(file):
-    with open(file, "r") as f:
+def load_products():
+    with open("products.json", "r") as f:
         return json.load(f)
 
-def save(file, data):
-    with open(file, "w") as f:
+
+def load_users():
+    with open("users.json", "r") as f:
+        return json.load(f)
+
+
+def save_users(data):
+    with open("users.json", "w") as f:
         json.dump(data, f, indent=4)
 
+
+def load_orders():
+    with open("orders.json", "r") as f:
+        return json.load(f)
+
+
+def save_orders(data):
+    with open("orders.json", "w") as f:
+        json.dump(data, f, indent=4)
+
+
 # -------------------
-# USER SYSTEM
+# SAVE USER
 # -------------------
 
-def add_user(uid):
-    users = load("users.json")
+def add_user(user_id):
 
-    if uid not in users:
-        users.append(uid)
-        save("users.json", users)
+    users = load_users()
+
+    if user_id not in users:
+        users.append(user_id)
+        save_users(users)
+
 
 # -------------------
-# KEY SYSTEM
+# GET KEY
 # -------------------
 
 def get_key(product):
-    path = f"keys/{product}.txt"
 
-    if not os.path.exists(path):
+    file_path = f"keys/{product}.txt"
+
+    if not os.path.exists(file_path):
         return None
 
-    with open(path, "r") as f:
-        keys = f.read().splitlines()
+    with open(file_path, "r") as f:
+        keys = f.readlines()
 
-    if not keys:
+    if len(keys) == 0:
         return None
 
-    key = keys[0]
+    first_key = keys[0].strip()
 
-    with open(path, "w") as f:
-        f.write("\n".join(keys[1:]))
+    with open(file_path, "w") as f:
+        f.writelines(keys[1:])
 
-    return key
+    return first_key
+
 
 # -------------------
 # START
 # -------------------
-
 @app.on_message(filters.command("start"))
 async def start(client, message):
+
     add_user(message.from_user.id)
 
     buttons = [
         [InlineKeyboardButton("🛒 Buy Products", callback_data="products")],
         [InlineKeyboardButton("📦 My Orders", callback_data="orders")],
-        [InlineKeyboardButton("👤 Profile", callback_data="profile")]
+        [InlineKeyboardButton("👤 My Profile", callback_data="profile")],
+        [InlineKeyboardButton("📞 Support", url="https://t.me/DEEPMODS1")]
     ]
 
     await message.reply_text(
-        f"🔥 Welcome {message.from_user.first_name}",
+        f"""
+🔥 Welcome {message.from_user.first_name}
+
+✅ Auto Digital Delivery Store
+""",
         reply_markup=InlineKeyboardMarkup(buttons)
     )
+
 
 # -------------------
 # PRODUCTS
 # -------------------
+@app.on_callback_query(filters.regex("products"))
+async def products_menu(client, callback_query):
 
-@app.on_callback_query(filters.regex("^products$"))
-async def products_menu(client, cq):
-
-    products = load("products.json")
+    products = load_products()
 
     buttons = []
 
-    for p in products:
+    for product in products:
         buttons.append([
-            InlineKeyboardButton(p, callback_data=f"buy|{p}")
+            InlineKeyboardButton(
+                product,
+                callback_data=f"buy|{product}"
+            )
         ])
 
-    await cq.message.edit_text(
+    buttons.append([
+        InlineKeyboardButton("🔙 Back", callback_data="back")
+    ])
+
+    await callback_query.message.edit_text(
         "🛒 Select Product",
         reply_markup=InlineKeyboardMarkup(buttons)
     )
 
+
 # -------------------
-# BUY
+# BUY MENU
 # -------------------
+@app.on_callback_query(filters.regex("^buy\|"))
+async def buy_menu(client, callback_query):
 
-@app.on_callback_query(filters.regex("^buy\\|"))
-async def buy_menu(client, cq):
+    product = callback_query.data.split("|")[1]
 
-    product = cq.data.split("|")[1]
-    products = load("products.json")
-
-    if product not in products:
-        return await cq.message.reply_text("❌ Product not found")
+    products = load_products()
 
     text = f"🔥 {product}\n\n"
+
     buttons = []
 
     for duration, price in products[product].items():
+
         text += f"{duration} = ₹{price}\n"
 
         buttons.append([
@@ -147,92 +160,212 @@ async def buy_menu(client, cq):
             )
         ])
 
-    await cq.message.edit_text(text, reply_markup=InlineKeyboardMarkup(buttons))
+    buttons.append([
+        InlineKeyboardButton("🔙 Back", callback_data="products")
+    ])
+
+    await callback_query.message.edit_text(
+        text,
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
+
 
 # -------------------
 # PAYMENT
 # -------------------
+@app.on_callback_query(filters.regex("^pay\|"))
+async def payment(client, callback_query):
 
-@app.on_callback_query(filters.regex("^pay\\|"))
-async def payment(client, cq):
+    data = callback_query.data.split("|")
 
-    data = cq.data.split("|")
-    product, duration, price = data[1], data[2], data[3]
+    product = data[1]
+    duration = data[2]
+    price = data[3]
 
     buttons = [
-        [InlineKeyboardButton("✅ I Have Paid", callback_data=f"done|{product}|{duration}")]
+        [InlineKeyboardButton(
+            "✅ I Have Paid",
+            callback_data=f"done|{product}|{duration}"
+        )]
     ]
 
-    await cq.message.reply_photo(
-        "qr.jpg",
-        caption=f"💳 Pay ₹{price}\n📦 {product}\n⏳ {duration}",
+    await callback_query.message.reply_photo(
+        photo="qr.jpg",
+        caption=f"""
+💳 PAYMENT DETAILS
+
+📦 Product: {product}
+⏳ Duration: {duration}
+💰 Amount: ₹{price}
+
+After payment click below button.
+""",
         reply_markup=InlineKeyboardMarkup(buttons)
     )
 
-# -------------------
-# DELIVERY
-# -------------------
 
-@app.on_callback_query(filters.regex("^done\\|"))
-async def done(client, cq):
+# -------------------
+# AUTO DELIVERY
+# -------------------
+@app.on_callback_query(filters.regex("^done\|"))
+async def auto_delivery(client, callback_query):
 
-    product, duration = cq.data.split("|")[1:3]
+    data = callback_query.data.split("|")
+
+    product = data[1]
+    duration = data[2]
 
     key = get_key(product)
 
-    if not key:
-        return await cq.message.reply_text("❌ Out of stock")
+    if key is None:
 
-    orders = load("orders.json")
+        await callback_query.message.reply_text(
+            "❌ Product Out Of Stock"
+        )
+
+        return
+
+    orders = load_orders()
 
     orders.append({
-        "user_id": cq.from_user.id,
+        "user_id": callback_query.from_user.id,
         "product": product,
         "duration": duration,
         "key": key
     })
 
-    save("orders.json", orders)
+    save_orders(orders)
 
-    await cq.message.reply_text(f"🔑 YOUR KEY:\n\n{key}")
+    await callback_query.message.reply_text(
+        f"""
+✅ PAYMENT SUCCESSFUL
+
+📦 Product: {product}
+⏳ Duration: {duration}
+
+🔑 YOUR KEY:
+
+`{key}`
+
+⚠️ Save Your Key Carefully.
+"""
+    )
+
 
 # -------------------
 # PROFILE
 # -------------------
+@app.on_callback_query(filters.regex("profile"))
+async def profile(client, callback_query):
 
-@app.on_callback_query(filters.regex("^profile$"))
-async def profile(client, cq):
-    await cq.message.reply_text(
-        f"👤 ID: {cq.from_user.id}\n📛 Name: {cq.from_user.first_name}"
+    await callback_query.message.reply_text(
+        f"""
+👤 USER PROFILE
+
+🆔 ID: {callback_query.from_user.id}
+📛 Name: {callback_query.from_user.first_name}
+"""
     )
 
-# -------------------
-# ORDERS
-# -------------------
 
-@app.on_callback_query(filters.regex("^orders$"))
-async def orders(client, cq):
+# -------------------
+# MY ORDERS
+# -------------------
+@app.on_callback_query(filters.regex("orders"))
+async def orders(client, callback_query):
 
-    all_orders = load("orders.json")
+    all_orders = load_orders()
 
     user_orders = []
 
-    for o in all_orders:
-        if o["user_id"] == cq.from_user.id:
-            user_orders.append(o)
+    for order in all_orders:
 
-    if not user_orders:
-        return await cq.message.reply_text("❌ No Orders")
+        if order["user_id"] == callback_query.from_user.id:
+            user_orders.append(order)
 
-    text = "📦 Orders\n\n"
+    if len(user_orders) == 0:
 
-    for o in user_orders:
-        text += f"{o['product']} → {o['key']}\n\n"
+        await callback_query.message.reply_text(
+            "❌ No Orders Found"
+        )
 
-    await cq.message.reply_text(text)
+        return
+
+    text = "📦 YOUR ORDERS\n\n"
+
+    for order in user_orders:
+
+        text += f"📦 {order['product']}\n"
+        text += f"🔑 {order['key']}\n\n"
+
+    await callback_query.message.reply_text(text)
+
 
 # -------------------
-# RUN BOT
+# BROADCAST
 # -------------------
+@app.on_message(filters.command("broadcast") & filters.user(ADMIN_ID))
+async def broadcast(client, message):
 
+    if len(message.command) < 2:
+
+        await message.reply_text(
+            "Usage:\n/broadcast message"
+        )
+
+        return
+
+    text = message.text.split(None, 1)[1]
+
+    users = load_users()
+
+    success = 0
+
+    for user in users:
+
+        try:
+            await client.send_message(user, text)
+            success += 1
+        except:
+            pass
+
+    await message.reply_text(
+        f"✅ Broadcast Sent To {success} Users"
+    )
+
+
+# -------------------
+# USER COUNT
+# -------------------
+@app.on_message(filters.command("users") & filters.user(ADMIN_ID))
+async def users_count(client, message):
+
+    users = load_users()
+
+    await message.reply_text(
+        f"👥 Total Users: {len(users)}"
+    )
+
+
+# -------------------
+# BACK BUTTON
+# -------------------
+@app.on_callback_query(filters.regex("back"))
+async def back(client, callback_query):
+
+    buttons = [
+        [InlineKeyboardButton("🛒 Buy Products", callback_data="products")],
+        [InlineKeyboardButton("📦 My Orders", callback_data="orders")],
+        [InlineKeyboardButton("👤 My Profile", callback_data="profile")]
+    ]
+
+    await callback_query.message.edit_text(
+        "🔥 Main Menu",
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
+
+
+# -------------------
+# RUN
+# -------------------
 app.run()
