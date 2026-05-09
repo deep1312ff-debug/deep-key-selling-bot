@@ -1,9 +1,67 @@
 {
-  "drip cilent": {
+  "BR MODS": {
+    "1day": 100,
+    "7day": 250
+  },
+
+  "PRIME-HOOK MOD MENU": {
     "1day": 90,
+    "3day": 180,
     "7day": 350
   },
-  "be mods": {
-    "basic": 350
+
+  "HG CHEATS": {
+    "1day": 150,
+    "10day": 350,
+    "30day": 750
+  },
+
+  "DRIP-CLIENT NON ROOT": {
+    "1day": 90,
+    "3day": 200,
+    "7day": 400,
+    "15day": 650,
+    "30day": 990
+  },
+
+  "DRIP CLIENT ROOT": {
+    "1day": 100,
+    "7day": 400
+  },
+
+  "GBOX ESIGN": {
+    "365day": 600
+  },
+
+  "HAXXCKER PRO ROOT": {
+    "10day": 520
+  },
+
+  "LK TEAM ROOT + PC": {
+    "5day": 300
+  },
+
+  "Reaper x pro": {
+    "10day": 350
+  },
+
+  "STRICKS BR ROOT": {
+    "3day": 200,
+    "5day": 350
+  },
+
+  "SPOTIFY MODE ROOT": {
+    "7day": 349
+  },
+
+  "Fluorite FF ios": {
+    "1day": 300,
+    "7day": 500,
+    "30day": 1800
+  },
+
+  "PATO TEAM APK MODE": {
+    "3day": 320,
+    "7day": 450
   }
 }
