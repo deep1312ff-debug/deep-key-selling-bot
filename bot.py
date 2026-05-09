@@ -3,9 +3,9 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import json
 import os
 
-BOT_TOKEN ="8642824822:AAFJkL2JBDhArA2U8mzk-dY-nsSN9-23VWQ"
+BOT_TOKEN = "8642824822:AAFGBVAzu4Y9d1OQ_6aC9oAeu4Ats6TRa94"
 API_ID = 39572733
-API_HASH ="1569f0ee27b3670dc249794afab35489"
+API_HASH = "1569f0ee27b3670dc249794afab35489"
 ADMIN_ID = 8622515071
 
 app = Client(
@@ -14,7 +14,6 @@ app = Client(
     api_id=API_ID,
     api_hash=API_HASH
 )
-
 # -------------------
 # INIT FILES
 # -------------------
