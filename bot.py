@@ -138,7 +138,7 @@ async def products_menu(client, callback_query):
 # -------------------
 # BUY MENU
 # -------------------
-@app.on_callback_query(filters.regex("^buy\\|"))
+@app.on_callback_query(filters.regex(r"^buy\|"))
 async def buy_menu(client, callback_query):
 
     product = callback_query.data.split("|")[1]
@@ -173,7 +173,7 @@ async def buy_menu(client, callback_query):
 # -------------------
 # PAYMENT
 # -------------------
-@app.on_callback_query(filters.regex("^pay\\|"))
+@app.on_callback_query(filters.regex(r"^pay\|"))
 async def payment(client, callback_query):
 
     data = callback_query.data.split("|")
@@ -207,7 +207,7 @@ After payment click below button.
 # -------------------
 # AUTO DELIVERY
 # -------------------
-@app.on_callback_query(filters.regex("^done\\|"))
+@app.on_callback_query(filters.regex(r"^done\|"))
 async def auto_delivery(client, callback_query):
 
     data = callback_query.data.split("|")
