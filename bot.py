@@ -152,12 +152,20 @@ async def buy_menu(client, callback_query):
 
     products = load_products()
 
-    text = f"🔥 {product}\n\n"
+    for duration, price in products[product].items():
 
+    text += f"{duration} = ₹{price}\n"
+
+    buttons.append([
+        InlineKeyboardButton(
+            f"{duration} - ₹{price}",
+            callback_data=f"pay|{product}|{duration}|{price}"
+        )
+    ])
     buttons = []
 
     if product not in products:
-    await callback_query.message.reply_text("❌ Invalid product")
+        await callback_query.message.reply_text("❌ Invalid product")
     return
         text += f"{duration} = ₹{price}\n"
 
