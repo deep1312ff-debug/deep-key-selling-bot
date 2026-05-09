@@ -1,67 +1,67 @@
 {
-  "BR MODS": {
-    "1day": 100,
-    "7day": 250
+  "BR_MODS": {
+    "1 day": 100,
+    "7 days": 250
   },
 
-  "PRIME-HOOK MOD MENU": {
-    "1day": 90,
-    "3day": 180,
-    "7day": 350
+  "PRIME_HOOK_MOD_MENU": {
+    "1 day": 90,
+    "3 days": 180,
+    "7 days": 350
   },
 
-  "HG CHEATS": {
-    "1day": 150,
-    "10day": 350,
-    "30day": 750
+  "HG_CHEATS": {
+    "1 day": 150,
+    "10 days": 350,
+    "30 days": 750
   },
 
-  "DRIP-CLIENT NON ROOT": {
-    "1day": 90,
-    "3day": 200,
-    "7day": 400,
-    "15day": 650,
-    "30day": 990
+  "DRIP_CLIENT_NON_ROOT": {
+    "1 day": 90,
+    "3 days": 200,
+    "7 days": 400,
+    "15 days": 650,
+    "30 days": 990
   },
 
-  "DRIP CLIENT ROOT": {
-    "1day": 100,
-    "7day": 400
+  "DRIP_CLIENT_ROOT": {
+    "1 day": 100,
+    "7 days": 400
   },
 
-  "GBOX ESIGN": {
-    "365day": 600
+  "GBOX_ESIGN": {
+    "365 days": 600
   },
 
-  "HAXXCKER PRO ROOT": {
-    "10day": 520
+  "HAXXCKER_PRO_ROOT": {
+    "10 days": 520
   },
 
-  "LK TEAM ROOT + PC": {
-    "5day": 300
+  "LK_TEAM_ROOT_PC": {
+    "5 days": 300
   },
 
-  "Reaper x pro": {
-    "10day": 350
+  "REAPER_X_PRO": {
+    "10 days": 350
   },
 
-  "STRICKS BR ROOT": {
-    "3day": 200,
-    "5day": 350
+  "STRICKS_BR_ROOT": {
+    "3 days": 200,
+    "5 days": 350
   },
 
-  "SPOTIFY MODE ROOT": {
-    "7day": 349
+  "SPOTIFY_MODE_ROOT": {
+    "7 days": 349
   },
 
-  "Fluorite FF ios": {
-    "1day": 300,
-    "7day": 500,
-    "30day": 1800
+  "FLUORITE_FF_IOS": {
+    "1 day": 300,
+    "7 days": 500,
+    "30 days": 1800
   },
 
-  "PATO TEAM APK MODE": {
-    "3day": 320,
-    "7day": 450
+  "PATO_TEAM_APK_MODE": {
+    "3 days": 320,
+    "7 days": 450
   }
 }
