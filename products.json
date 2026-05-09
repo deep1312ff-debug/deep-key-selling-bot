@@ -1,9 +1,9 @@
 {
-  "netflix": {
-    "1day": 10,
-    "7day": 50
+  "drip cilent": {
+    "1day": 90,
+    "7day": 350
   },
-  "pubg": {
-    "basic": 20
+  "be mods": {
+    "basic": 350
   }
 }
